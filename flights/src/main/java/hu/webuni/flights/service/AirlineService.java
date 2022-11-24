@@ -14,7 +14,8 @@ public class AirlineService {
             new Airline(1, "Budapest", "Lhasa", "HUF", 150000),
             new Airline(2, "Lhasa", "Budapest", "HUF", 130000), 
             new Airline(1, "Budapest", "Praga", "EUR", 150),
-            new Airline(1, "Praga", "Budapest", "EUR", 120)
+            new Airline(1, "Praga", "Budapest", "EUR", 120),
+            new Airline(5, "Budapest", "Praga", "USD", 200)
 
     );
 

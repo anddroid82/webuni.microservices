@@ -1,5 +1,6 @@
 package hu.webuni.flights.dto;
 
+
 public class Airline {
 	private int id;
 	private String from;
@@ -57,4 +58,12 @@ public class Airline {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+	@Override
+	public String toString() {
+		return "Airline [id=" + id + ", from=" + from + ", to=" + to + ", currency=" + currency + ", price=" + price
+				+ "]";
+	}
+	
+	
 }

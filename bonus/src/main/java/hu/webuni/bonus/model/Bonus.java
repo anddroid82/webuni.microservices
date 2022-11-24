@@ -30,5 +30,10 @@ public class Bonus {
     public void setPoints(double points) {
         this.points = points;
     }
+
+	@Override
+	public String toString() {
+		return "Bonus [user=" + user + ", points=" + points + "]";
+	}
     
 }
