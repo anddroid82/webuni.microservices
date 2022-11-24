@@ -1,8 +1,8 @@
-package hu.webuni.config;
+package hu.webuni.security.config;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig {
 
 	

@@ -39,7 +39,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>hu.webuni</groupId>
 			<artifactId>bonus-api</artifactId>
