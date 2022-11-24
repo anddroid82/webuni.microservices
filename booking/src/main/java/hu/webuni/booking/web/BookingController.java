@@ -35,9 +35,6 @@ public class BookingController {
 
     @PostMapping("/ticket")
     public PurchaseData buyTicket(@RequestBody TicketData ticketData) {
-//    	System.out.println(bonusApi.getPoints(ticketData.getUser()));
-//    	System.out.println(currencyApi.getRate("USD", "HUF"));
-//    	System.out.println();
     	PurchaseData pd=new PurchaseData();
     	pd.setSuccess(false);
     	List<Airline> searchFlight = flightsApi.searchFlight(ticketData.getFrom(), ticketData.getTo());
