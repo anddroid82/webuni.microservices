@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
@@ -26,12 +27,15 @@ public class AuthFilter implements GlobalFilter {
 		}catch (Exception e) {
 		}
 		if (authHeader == null || !authHeader.startsWith(BEARER)) {
-			return this.onError(exchange, "Authorization exception", HttpStatus.UNAUTHORIZED);
+			//return this.onError(exchange, "Authorization exception", HttpStatus.UNAUTHORIZED);
 		}
-		
 		System.out.println("Auth:"+authHeader);
-		
-		
+		String token = authHeader.substring(BEARER.length());
+		WebClient webClient = WebClient.create();
+		String respString = webClient.get()
+				.uri("http://login/validateToken?token" + token).retrieve()
+				.bodyToMono(String.class).block();
+		//System.out.println(respString);
 		
 		/*
 		if (authHeader != null && authHeader.startsWith(BEARER)) {
