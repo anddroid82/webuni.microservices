@@ -20,10 +20,8 @@ public class AuthFilter implements GlobalFilter {
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		ServerHttpRequest request = exchange.getRequest();
 		if (!this.needAuthentication(request)) {
-			System.out.println("nem kell auth");
 			return chain.filter(exchange);
 		}
-		System.out.println("kell auth");
 		String authHeader = null;
 		try {
 			authHeader=request.getHeaders().getOrEmpty(AUTH).get(0);
