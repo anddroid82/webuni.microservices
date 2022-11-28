@@ -1,4 +1,4 @@
-package hu.webuni.login.service;
+package hu.webuni.security.config;
 
 import java.util.Date;
 import java.util.stream.Collectors;

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
@@ -19,35 +18,32 @@ public class AuthFilter implements GlobalFilter {
 	
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		System.out.println("filter");
 		ServerHttpRequest request = exchange.getRequest();
+		if (!this.needAuthentication(request)) {
+			System.out.println("nem kell auth");
+			return chain.filter(exchange);
+		}
+		System.out.println("kell auth");
 		String authHeader = null;
 		try {
 			authHeader=request.getHeaders().getOrEmpty(AUTH).get(0);
-		}catch (Exception e) {
-		}
-		if (authHeader == null || !authHeader.startsWith(BEARER)) {
-			//return this.onError(exchange, "Authorization exception", HttpStatus.UNAUTHORIZED);
-		}
-		System.out.println("Auth:"+authHeader);
-		String token = authHeader.substring(BEARER.length());
-		WebClient webClient = WebClient.create();
-		String respString = webClient.get()
-				.uri("http://login/validateToken?token" + token).retrieve()
-				.bodyToMono(String.class).block();
-		//System.out.println(respString);
-		
-		/*
-		if (authHeader != null && authHeader.startsWith(BEARER)) {
-			String token = authHeader.substring(BEARER.length());
-			
-			UserDetails principal = jwtService.parseJwt(token);
-			
-			Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(auth);
-		}
-		*/
-		return chain.filter(exchange);
+			if (authHeader == null || !authHeader.startsWith(BEARER)) {
+				return this.onError(exchange, "Authorization exception", HttpStatus.UNAUTHORIZED);
+			}
+			return chain.filter(exchange);
+//			String token = authHeader.substring(BEARER.length());
+//			Set<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, Collections.emptySet());
+//	        String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
+//			
+//			WebClient webClient = WebClient.create();
+//			return webClient.get()
+//					.uri("http://localhost:8080/login/validateToken?token="+token).retrieve()
+//					.bodyToMono(String.class).flatMap( response -> {
+//						System.out.println("response: "+response);
+//						return chain.filter(exchange);
+//					});
+		}catch (Exception e) {}
+		return this.onError(exchange, "Authorization exception", HttpStatus.UNAUTHORIZED);
 	}
 
 	private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
@@ -56,8 +52,10 @@ public class AuthFilter implements GlobalFilter {
         return response.setComplete();
     }
 
-    private boolean isAuthMissing(ServerHttpRequest request) {
-        return !request.getHeaders().containsKey("Authorization");
+    private boolean needAuthentication(ServerHttpRequest request) {
+    	//System.out.println(request.getPath().toString());
+        return !(request.getPath().toString().equals("/api/validateToken") || 
+        		request.getPath().toString().equals("/api"));
     }
 	
 }

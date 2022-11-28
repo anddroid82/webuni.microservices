@@ -1,4 +1,4 @@
-package hu.webuni.login.dto;
+package hu.webuni.security.config;
 
 public class LoginDto {
 

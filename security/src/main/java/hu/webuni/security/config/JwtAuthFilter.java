@@ -1,4 +1,4 @@
-package hu.webuni.login.filter;
+package hu.webuni.security.config;
 
 import java.io.IOException;
 
@@ -12,13 +12,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import hu.webuni.login.service.JwtService;
-
-
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-
+	
 	private static final String AUTHHEADERNAME = "Authorization";
 	private static final String BEARER = "Bearer ";
 	
